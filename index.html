@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script>(function(){var P='g5-',S=Storage.prototype,G=S.getItem,T=S.setItem,R=S.removeItem;S.getItem=function(k){return G.call(this,P+k)};S.setItem=function(k,v){return T.call(this,P+k,v)};S.removeItem=function(k){return R.call(this,P+k)}})();</script>
+<script>(function(){var P='g6-',S=Storage.prototype,G=S.getItem,T=S.setItem,R=S.removeItem;S.getItem=function(k){return G.call(this,P+k)};S.setItem=function(k,v){return T.call(this,P+k,v)};S.removeItem=function(k){return R.call(this,P+k)}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>5학년 게임 교실</title>
+<title>6학년 게임 교실</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at 50% 0%,#2f3160 0%,#171a33 70%);color:#f3efe4;font-family:'Gowun Dodum',system-ui,sans-serif;min-height:100vh;font-size:17px}
+body{margin:0;background:radial-gradient(circle at 50% 0%,#2b3160 0%,#12141c 70%);color:#f3efe4;font-family:'Gowun Dodum',system-ui,sans-serif;min-height:100vh;font-size:17px}
 .wrap{max-width:980px;margin:0 auto;padding:30px 16px 60px}
-.grade{display:inline-block;background:#f78fb3;color:#1b1530;font-family:'Black Han Sans';border-radius:999px;padding:4px 16px;font-size:18px}
-h1{font-family:'Black Han Sans',sans-serif;font-weight:400;font-size:44px;color:#f78fb3;margin:8px 0 0;text-align:center}
+.grade{display:inline-block;background:#f2c14e;color:#1b1530;font-family:'Black Han Sans';border-radius:999px;padding:4px 16px;font-size:18px}
+h1{font-family:'Black Han Sans',sans-serif;font-weight:400;font-size:44px;color:#f2c14e;margin:8px 0 0;text-align:center}
 .sub{text-align:center;color:#c5c2d6;margin:6px 0 18px}
 h2{font-family:'Black Han Sans',sans-serif;font-weight:400;font-size:24px;margin:28px 0 12px;color:#fff}
 .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 14px}
@@ -23,10 +23,10 @@ h2{font-family:'Black Han Sans',sans-serif;font-weight:400;font-size:24px;margin
 .lv.on.easy{border-color:#5fd39a;background:#1f4d3a}.lv.on.normal{border-color:#f2c14e;background:#4d4220}.lv.on.hard{border-color:#ff6b6b;background:#4d2020}
 .prog{background:#ffffff10;border:2px solid #ffffff22;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .bar{flex:1;min-width:180px;height:16px;background:#ffffff18;border-radius:999px;overflow:hidden}
-.bar i{display:block;height:100%;background:linear-gradient(90deg,#5fd39a,#f78fb3);border-radius:999px;transition:width .5s}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#5fd39a,#f2c14e);border-radius:999px;transition:width .5s}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .card{position:relative;background:#1e2130;border:2px solid #3a3f57;border-radius:18px;transition:transform .15s,border-color .15s}
-.card:hover{transform:translateY(-4px);border-color:#f78fb3}
+.card:hover{transform:translateY(-4px);border-color:#f2c14e}
 .card.done{border-color:#5fd39a;background:#1b2a24}
 .card a{display:block;text-decoration:none;color:inherit;padding:18px 18px 62px}
 .em{font-size:46px;line-height:1}
@@ -48,18 +48,18 @@ h2{font-family:'Black Han Sans',sans-serif;font-weight:400;font-size:24px;margin
 </head>
 <body>
 <div class="wrap">
-  <div style="text-align:center"><span class="grade">5학년</span></div>
-  <h1>🎮 5학년 게임 교실</h1>
+  <div style="text-align:center"><span class="grade">6학년</span></div>
+  <h1>🎮 6학년 게임 교실</h1>
   <p class="sub">학기말 종합 게임 · 난이도를 고르고 게임을 시작하세요 · 진행 상황은 이 기기에 자동 저장돼요</p>
   <div class="levels" id="levels"></div>
-  <div class="prog"><b id="pt">완료 0 / 0</b><div class="bar"><i id="pb" style="width:0"></i></div><span id="pm" style="color:#f78fb3"></span></div>
+  <div class="prog"><b id="pt">완료 0 / 0</b><div class="bar"><i id="pb" style="width:0"></i></div><span id="pm" style="color:#f2c14e"></span></div>
   <div id="list"></div>
-  <p class="foot">우리 사이트 게임은 끝까지 깨면 <b>자동으로</b> 완료 표시가 돼요. 완료 기록은 난이도마다 따로 남아요.<br><br><button class="reset" id="reset">완료 기록 모두 지우기</button></p>
+  <p class="foot">우리 사이트 게임은 끝까지 깨면 <b>자동으로</b> 완료 표시가 돼요. 다른 사이트 게임은 직접 <b>완료</b> 버튼을 눌러 주세요. 완료 기록은 난이도마다 따로 남아요.<br><br><button class="reset" id="reset">완료 기록 모두 지우기</button></p>
 </div>
 <script>
-const GRADE=5;
-const LEVELS=[['easy','🟢 쉬움','문제마다 도움말 · 정답 힌트 있음 · 짧은 판'],['normal','🟡 보통','5학년 학기말 수준 · 정답 힌트 있음'],['hard','🔴 어려움','더 어려운 문제 · 정답 힌트 없음 · 기회 적음']];
-const GROUPS=[["🏪 시뮬레이션",[["tteok","tteok.html","🍢","떡볶이 가게 사장님","사장과 매니저가 힘을 합쳐 가게를 운영해요. 재료 구매, 가격 결정, 장부 정리까지!",["2인 협동","분수·평균","경제"],"L"],["farm","farm.html","🌱","우리 반 꼬마 농장","씨앗을 심고 물을 주고 벌레를 잡아요! 날씨와 시장 값을 보고 작물을 키워 팔아요.",["1인·모둠","식물 키우기","경제"],"L"],["park","park.html","🎢","놀이공원 사장님","놀이기구를 짓고 입장료를 정해요. 손님이 즐거우면 밤마다 불꽃놀이가 펑펑!",["1인·모둠","경영","계산"],"L"],["shelter","shelter.html","🐾","동물 보호소","동물을 돌보고 치료해서 꼭 맞는 새 가족에게 입양 보내요.",["1인·모둠","동물 돌봄","추론"],"L"],["island","island.html","🏝️","무인도에서 살아남기","탐험대장과 살림꾼이 7일 동안 물·식량·나무를 나눠 쓰며 봉화대를 완성해 구조 신호를 보내요!",["2인 협동","분수·평균","생존 전략"],"L"]]],["🔐 방탈출",[["space","space.html","🚀","우주정거장 탈출","수면실부터 조종실까지, 스도쿠·암호·통신 신호를 풀고 탈출 포드를 발사하라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["museum","museum.html","🏛️","한밤의 박물관 탈출","이집트관, 자연사관, 미술관에 숨은 수수께끼를 풀고 비상구를 찾아라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["pirate","pirate.html","🏴‍☠️","해적선의 보물","선장실, 갑판, 화물칸을 지나 보물섬 동굴의 보물 상자를 열어라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["wizard","wizard.html","🧙","마법사의 탑","도서관, 연금술 실험실, 천문대를 올라 세 개의 룬으로 봉인을 풀어라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["time","time.html","🕰️","시간 여행 연구소","조선 세종 시대, 1919년, 2050년 미래 도시를 거쳐 집으로 돌아와라!",["시대 4곳","퍼즐 17개","사회·국어 융합"],"L"]]],["⏳ 연속 방탈출 「사라진 타임캡슐」",[["timecapsule-1","timecapsule-1.html","📦","1일차 · 단서를 쫓아라","교실, 과학실, 음악실을 조사해 사라진 타임캡슐의 단서를 찾아라!",["방 3개"],"L"],["timecapsule-2","timecapsule-2.html","🕵️","2일차 · 용의자는 셋","보안관실, 교무실, 도서관에서 용의자를 좁혀라!",["방 3개","교과 퍼즐"],"L"],["timecapsule-3","timecapsule-3.html","🗝️","3일차 · X의 정체","증거 세 개를 모아 범인을 지목하고 타임캡슐을 되찾아라!",["방 3개","문제 12개"],"L"]]]];
+const GRADE=6;
+const LEVELS=[['easy','🟢 쉬움','문제마다 도움말 · 정답 힌트 있음 · 짧은 판'],['normal','🟡 보통','6학년 학기말 수준 · 정답 힌트 있음'],['hard','🔴 어려움','더 어려운 문제 · 정답 힌트 없음 · 기회 적음']];
+const GROUPS=[["🏪 시뮬레이션",[["tteok","tteok.html","🍢","떡볶이 가게 사장님","사장과 매니저가 힘을 합쳐 가게를 운영해요. 재료 구매, 가격 결정, 장부 정리까지!",["2인 협동","비율·백분율","경제"],"L"],["farm","farm.html","🌱","우리 반 꼬마 농장","씨앗을 심고 물을 주고 벌레를 잡아요! 날씨와 시장 값을 보고 작물을 키워 팔아요.",["1인·모둠","식물 키우기","경제"],"L"],["park","park.html","🎢","놀이공원 사장님","놀이기구를 짓고 입장료를 정해요. 손님이 즐거우면 밤마다 불꽃놀이가 펑펑!",["1인·모둠","경영","계산"],"L"],["shelter","shelter.html","🐾","동물 보호소","동물을 돌보고 치료해서 꼭 맞는 새 가족에게 입양 보내요.",["1인·모둠","동물 돌봄","추론"],"L"],["island","island.html","🏝️","무인도에서 살아남기","탐험대장과 살림꾼이 7일 동안 물·식량·나무를 나눠 쓰며 봉화대를 완성해 구조 신호를 보내요!",["2인 협동","비율·백분율","생존 전략"],"L"]]],["🔐 방탈출",[["space","space.html","🚀","우주정거장 탈출","수면실부터 조종실까지, 스도쿠·암호·통신 신호를 풀고 탈출 포드를 발사하라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["museum","museum.html","🏛️","한밤의 박물관 탈출","이집트관, 자연사관, 미술관에 숨은 수수께끼를 풀고 비상구를 찾아라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["pirate","pirate.html","🏴‍☠️","해적선의 보물","선장실, 갑판, 화물칸을 지나 보물섬 동굴의 보물 상자를 열어라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["wizard","wizard.html","🧙","마법사의 탑","도서관, 연금술 실험실, 천문대를 올라 세 개의 룬으로 봉인을 풀어라!",["방 4개","퍼즐 15개","교과+상식"],"L"],["magicschool","https://mummummi.github.io/escapemagicschool/","🌙","달빛 마법 학교의 비밀","달빛이 비치는 마법 학교에 숨겨진 비밀을 풀고 탈출하라!",["방탈출","마법 학교"],"X"],["amusement","https://mummummi.github.io/escapeamusementpark/","🎡","한밤의 놀이공원 탈출","문 닫은 한밤의 별빛랜드! 놀이기구 곳곳의 수수께끼를 풀고 탈출하라!",["방탈출","놀이공원"],"X"],["time","time.html","🕰️","시간 여행 연구소","조선 세종 시대, 1919년, 2050년 미래 도시를 거쳐 집으로 돌아와라!",["시대 4곳","퍼즐 17개","사회·국어 융합"],"L"]]],["⏳ 연속 방탈출 「사라진 타임캡슐」",[["timecapsule-1","timecapsule-1.html","📦","1일차 · 단서를 쫓아라","교실, 과학실, 음악실을 조사해 사라진 타임캡슐의 단서를 찾아라!",["방 3개"],"L"],["timecapsule-2","timecapsule-2.html","🕵️","2일차 · 용의자는 셋","보안관실, 교무실, 도서관에서 용의자를 좁혀라!",["방 3개","교과 퍼즐"],"L"],["timecapsule-3","timecapsule-3.html","🗝️","3일차 · X의 정체","증거 세 개를 모아 범인을 지목하고 타임캡슐을 되찾아라!",["방 3개","문제 12개"],"L"]]]];
 const LEVEL_KEYS={"space":{"easy":"space-escape-v1-easy","normal":"space-escape-v1","hard":"space-escape-v1-hard"},"tteok":{"easy":"tteok-shop-v1-easy","normal":"tteok-shop-v1","hard":"tteok-shop-v1-hard"},"museum":{"easy":"museum-escape-v1-easy","normal":"museum-escape-v1","hard":"museum-escape-v1-hard"},"pirate":{"easy":"pirate-escape-v1-easy","normal":"pirate-escape-v1","hard":"pirate-escape-v1-hard"},"wizard":{"easy":"wizard-escape-v1-easy","normal":"wizard-escape-v1","hard":"wizard-escape-v1-hard"},"time":{"easy":"time-escape-v1-easy","normal":"time-escape-v1","hard":"time-escape-v1-hard"},"timecapsule-1":{"easy":"timecapsule-day1-v2-easy","normal":"timecapsule-day1-v2","hard":"timecapsule-day1-v2-hard"},"timecapsule-2":{"easy":"timecapsule-day2-easy","normal":"timecapsule-day2","hard":"timecapsule-day2-hard"},"timecapsule-3":{"easy":"timecapsule-day3-easy","normal":"timecapsule-day3","hard":"timecapsule-day3-hard"},"island":{"easy":"island-survival-v1-easy","normal":"island-survival-v1","hard":"island-survival-v1-hard"},"city":{"easy":"city-mayor-v1-easy","normal":"city-mayor-v1","hard":"city-mayor-v1-hard"},"toyland":{"easy":"kid-toyland-v1-easy","normal":"kid-toyland-v1","hard":"kid-toyland-v1-hard"},"dragplay":{"easy":"kid-dragplay-v1-easy","normal":"kid-dragplay-v1","hard":"kid-dragplay-v1-hard"},"village":{"easy":"kid-village-v1-easy","normal":"kid-village-v1","hard":"kid-village-v1-hard"},"arcade":{"easy":"kid-arcade-v1-easy","normal":"kid-arcade-v1","hard":"kid-arcade-v1-hard"},"zoo":{"easy":"esc-zoo-v1-easy","normal":"esc-zoo-v1","hard":"esc-zoo-v1-hard"},"town":{"easy":"esc-town-v1-easy","normal":"esc-town-v1","hard":"esc-town-v1-hard"},"cook":{"easy":"esc-cook-v1-easy","normal":"esc-cook-v1","hard":"esc-cook-v1-hard"},"farm":{"easy":"sim-farm-v1-easy","normal":"sim-farm-v1","hard":"sim-farm-v1-hard"},"park":{"easy":"sim-park-v1-easy","normal":"sim-park-v1","hard":"sim-park-v1-hard"},"shelter":{"easy":"sim-shelter-v1-easy","normal":"sim-shelter-v1","hard":"sim-shelter-v1-hard"}};
 const LEVEL_TEST={'space':s=>s.end?String(s.end):null,'tteok':s=>s.phase==='end'?'m'+s.money:null,'museum':s=>s.end?String(s.end):null,'pirate':s=>s.end?String(s.end):null,'wizard':s=>s.end?String(s.end):null,'time':s=>s.end?String(s.end):null,'timecapsule-1':s=>s.end?String(s.end):null,'timecapsule-2':s=>s.end?String(s.end):null,'timecapsule-3':s=>s.end?String(s.end):null,'island':s=>s.phase==='end'?'e'+s.day+'-'+s.hp+'-'+s.fire+'-'+s.know:null,'city':s=>s.phase==='end'?'e'+s.money+'-'+Object.keys(s.grid).length+'-'+s.trust:null,'toyland':s=>s.end?String(s.end):null,'dragplay':s=>s.end?String(s.end):null,'village':s=>s.end?String(s.end):null,'arcade':s=>s.end?String(s.end):null,'zoo':s=>s.end?String(s.end):null,'town':s=>s.end?String(s.end):null,'cook':s=>s.end?String(s.end):null,'farm':s=>s.end?String(s.end):null,'park':s=>s.end?String(s.end):null,'shelter':s=>s.end?String(s.end):null};
 const SINGLE={};

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script>(function(){var P='g6-',S=Storage.prototype,G=S.getItem,T=S.setItem,R=S.removeItem;S.getItem=function(k){return G.call(this,P+k)};S.setItem=function(k,v){return T.call(this,P+k,v)};S.removeItem=function(k){return R.call(this,P+k)}})();</script>
+<script>(function(){var P='g5-',S=Storage.prototype,G=S.getItem,T=S.setItem,R=S.removeItem;S.getItem=function(k){return G.call(this,P+k)};S.setItem=function(k,v){return T.call(this,P+k,v)};S.removeItem=function(k){return R.call(this,P+k)}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>무인도에서 살아남기 · 6학년</title>
+<title>무인도에서 살아남기 · 5학년</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <style>
@@ -71,7 +71,7 @@ input[type=text],input[type=number]{font-family:inherit;font-size:22px;padding:8
   <div class="center" style="margin-top:24px"><button class="ghost" id="reset" style="font-size:13px;padding:5px 12px">처음부터 다시</button></div>
 </div>
 <script>
-const GRADE=6;
+const GRADE=5;
 const DATA={"easy":{"goal":35,"needW":1.5,"wu":"L","wstep":0.5,"dmgMul":0.7,"tries":3,"hints":[]},"normal":{"goal":50,"needW":1.5,"wu":"L","wstep":0.5,"dmgMul":1,"tries":2,"hints":[]},"hard":{"goal":75,"needW":1.5,"wu":"L","wstep":0.5,"dmgMul":1.4,"tries":1,"hints":[]}};
 const LV=(()=>{const q=new URLSearchParams(location.search).get('lv');const v=q||(()=>{try{return localStorage.getItem('class-level')}catch(e){return null}})()||'normal';return ['easy','normal','hard'].includes(v)?v:'normal'})();
 const LVN={easy:'🟢 쉬움',normal:'🟡 보통',hard:'🔴 어려움'}[LV];

@@ -346,6 +346,9 @@ const THEME={
 
 </script>
 <script>
+/* 🧸 분위기 소품 (문제와 상관없는 기물 · 눌러 보면 설명만 나와요) */
+const DECOR=[[["w", "🏁", "체크무늬 깃발", 90, 250, 115, "결승선을 알리는 깃발이에요."], ["f", "🚧", "라바콘", 705, 735, 125, "트랙을 표시하는 주황 고깔이에요."], ["f", "👟", "운동화", 1110, 735, 125, "달리기 연구용 운동화예요. 밑창이 닳았어요."]], [["w", "🦺", "안전 조끼", 1050, 250, 115, "형광 안전 조끼가 걸려 있어요."], ["f", "🪖", "헬멧", 90, 735, 125, "자전거 탈 때 꼭 쓰는 헬멧이에요."], ["w", "🚸", "어린이 보호구역 표지", 600, 250, 115, "\"어린이 보호구역 시속 30km\" 표지판이에요."]], [["f", "🔋", "배터리 팩", 90, 735, 125, "충전 중인 배터리예요. 불빛이 깜빡여요."], ["w", "📉", "연비 포스터", 90, 250, 115, "\"천천히 달리면 연료를 아껴요\" 포스터예요."], ["f", "🧰", "정비 도구함", 495, 800, 125, "로봇을 고치는 도구예요. 지금은 쓸 일이 없어요."]]];
+DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:(d[0]==='f'?E(d[3],d[4]+d[5]*0.42,d[5]*0.42,d[5]*0.09,'#0000002e'):'')+EM(d[3],d[4],d[1],d[5],'filter="url(#sh)"'),html:'<div class="box">'+d[6]+'</div>'}))});
 THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{if(!o._rid){o.id='r'+ri+'_'+o.id;o._rid=1}}));/* 방마다 물건 id를 따로 → 다른 방의 같은 이름 문/물건이 '이미 푼 것'으로 처리되는 문제 방지 */
 try{const U=S.used||{};if(Object.keys(U).some(k=>!/^[pu]_r\d+_/.test(k))){THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{const base=o.id.replace(/^r\d+_/,'');['p_','u_'].forEach(pf=>{if(U[pf+base]&&(ri<S.room||(base!=='door'&&ri<=S.room)))U[pf+o.id]=1})}));Object.keys(U).forEach(k=>{if(!/^[pu]_r\d+_/.test(k))delete U[k]});S.used=U;save()}}catch(e){}/* 예전 저장 기록 옮기기 */
 TH=THEME;if(GRADE<=2)document.body.classList.add('kids');S.max=S.max||0;render();

@@ -29,7 +29,7 @@ button{font-family:inherit;font-size:18px;border:0;border-radius:12px;padding:10
 .roombar{display:flex;justify-content:space-between;align-items:center;margin:6px 0 8px;gap:8px;flex-wrap:wrap}
 .scene{position:relative;width:100%;border-radius:16px;overflow:hidden;border:2px solid var(--line);box-shadow:0 10px 30px rgba(0,0,0,.45);background:#000}
 .scene svg{display:block;width:100%;height:auto}
-.hot{cursor:pointer;transition:filter .15s}
+.hot .ah{fill:#fff;fill-opacity:0;stroke:#fff;stroke-opacity:0;stroke-width:5;transition:fill-opacity .15s,stroke-opacity .15s}.hot:hover .ah{fill-opacity:.14;stroke-opacity:.95}.hot.selhint .ah{stroke:#ffd54f;stroke-opacity:1;fill-opacity:.12}.hot.done .ah{fill-opacity:0}.hot{cursor:pointer;transition:filter .15s}
 .hot:hover{filter:drop-shadow(0 0 12px color-mix(in srgb,var(--gold) 90%,transparent)) brightness(1.08)}
 .hot.done{filter:saturate(.75)}
 .hot.selhint{animation:hl 1.2s ease-in-out infinite}
@@ -365,6 +365,19 @@ const sw=S*1.1;return EM(x,y-S*0.12,e,S*0.68,'filter="url(#sh)"')+R(x-sw/2,y+S*0
 /* 🧸 분위기 소품 (문제와 상관없는 기물 · 눌러 보면 설명만 나와요) */
 const DECOR=[[["a", "🌌", "은하수 창", 540, 250, 150, "창밖으로 은하수가 흐르듯 보여요."], ["f", "🧃", "우주 음료 팩", 1125, 800, 125, "빨대로 마시는 음료예요. 둥둥 떠다니지 않게 고정돼 있어요."], ["p", "🖼️", "승무원 단체 사진", 1020, 250, 150, "오로라호 출발 날 찍은 사진이에요."]], [["f", "📦", "관측 장비 상자", 90, 735, 125, "\"예비 렌즈\" 라벨이 붙어 있어요."], ["a", "☄️", "혜성 사진", 90, 250, 150, "꼬리가 긴 혜성 사진이에요."], ["f", "🛌", "수면 주머니", 570, 800, 125, "무중력에서 자는 침낭이에요."]], [["p", "🌍", "지구 창", 525, 250, 150, "창밖으로 점점 커지는 지구가 보여요. 집이다!"], ["f", "🧳", "개인 짐", 1050, 800, 125, "승무원의 짐 가방이에요."], ["s", "🚨", "경고등", 1065, 250, 150, "지금은 꺼져 있어요. 다행이에요."]]];
 DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:DART(d),html:'<div class="box">'+d[6]+'</div>'}))});
+/* 🖼️ AI 배경 그림 */
+const ARTMAP={"rooms": [{"planets": [50, 560, 500, 300, {"svg": "['#9e9e9e','#ffcc80','#4fc3f7','#e57373','#ffb74d','#ffe082'].map((c,i)=>C(115+i*72,710,12+i*4,c)).join('')"}], "console": [580, 690, 440, 210, {"svg": "T(935,785,'?.? L','#69f0ae',30,'bold')"}], "door": [1330, 170, 250, 600], "deco0": [520, 0, 570, 380], "deco1": [980, 330, 100, 120], "deco2": [1100, 180, 120, 140]}, {"scope": [90, 300, 410, 530], "signal": [690, 400, 230, 150, {"fit": 1, "pad": 1.0}], "door": [1330, 170, 250, 600], "deco0": [460, 480, 130, 180], "deco1": [1100, 180, 120, 140], "deco2": [1250, 180, 70, 440]}, {"dice": [150, 490, 350, 330, {"svg": "EM(320,650,'🎲',110)"}], "seat": [620, 370, 380, 460], "launch": [1290, 230, 270, 550], "deco0": [520, 0, 570, 380], "deco1": [980, 620, 240, 230], "deco2": [1400, 170, 160, 50]}], "id": "g5-probe"};
+const AMbox=a=>{const ns='http://www.w3.org/2000/svg';const sv=document.createElementNS(ns,'svg');sv.setAttribute('width','1600');sv.setAttribute('height','900');sv.style.cssText='position:absolute;left:-9999px;top:0';sv.innerHTML=DEFS+a;document.body.appendChild(sv);let b={x:0,y:0,width:1,height:1};try{const g=document.createElementNS(ns,'g');while(sv.childNodes.length>1)g.appendChild(sv.childNodes[1]);sv.appendChild(g);const r=g.getBBox();b={x:r.x,y:r.y,width:r.width||1,height:r.height||1}}catch(e){}sv.remove();return b};
+ARTMAP.rooms.forEach((hot,ri)=>{const r=THEME.rooms[ri];if(!r||!hot)return;const src='art/'+ARTMAP.id+'_'+(ri+1)+'.webp';
+ r.bg=()=>`<image href="${src}" x="0" y="0" width="1600" height="900" preserveAspectRatio="xMidYMid slice"/>`;
+ r.objects=r.objects.filter(o=>!(o.deco&&!hot[o.id]));
+ r.objects.forEach(o=>{const h=hot[o.id];if(!h)return;const [x,y,w,hh,opt]=h;const old=o.art;
+  o.art=()=>{let s='';if(opt&&opt.keep){const [tx,ty,sc]=opt.keep;s=`<g transform="translate(${tx} ${ty}) scale(${sc})">${val(old)}</g>`}
+   if(opt&&opt.clip){const [ox,oy,orr,nx,ny,nr]=opt.clip;const sc=nr/orr;const cid='cl_'+o.id;s+=`<clipPath id="${cid}"><circle cx="${ox}" cy="${oy}" r="${orr}"/></clipPath><g transform="translate(${nx-ox*sc} ${ny-oy*sc}) scale(${sc})"><g clip-path="url(#${cid})">${val(old)}</g></g>`}
+   if(opt&&opt.lab){const arr=eval(opt.lab.expr);s+=arr.map((t,i)=>{const [lx,ly]=opt.lab.pos?opt.lab.pos[i]:[x+w*(i+.5)/arr.length,opt.lab.y];return `<rect x="${lx-48}" y="${ly-30}" width="96" height="56" rx="14" fill="#3e2723" stroke="#ffe082" stroke-width="4" opacity=".92"/><text x="${lx}" y="${ly+10}" text-anchor="middle" font-size="32" font-weight="bold" fill="#ffe082">${t}</text>`}).join('')}
+   if(opt&&opt.svg){s+=eval(opt.svg)}
+   if(opt&&opt.fit){const a=val(old);const b=AMbox(a);const p=opt.pad??0.9;const sc=Math.min(w/b.width,hh/b.height)*p;const tx=x+w/2-(b.x+b.width/2)*sc,ty=y+hh/2-(b.y+b.height/2)*sc;s=`<g transform="translate(${tx} ${ty}) scale(${sc})" opacity="${opt.op??1}">${a}</g>`}
+   return s+`<rect class="ah" x="${x}" y="${y}" width="${w}" height="${hh}" rx="22"/>`}})});
 THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{if(!o._rid){o.id='r'+ri+'_'+o.id;o._rid=1}}));/* 방마다 물건 id를 따로 → 다른 방의 같은 이름 문/물건이 '이미 푼 것'으로 처리되는 문제 방지 */
 try{const U=S.used||{};if(Object.keys(U).some(k=>!/^[pu]_r\d+_/.test(k))){THEME.rooms.forEach((r,ri)=>r.objects.forEach(o=>{const base=o.id.replace(/^r\d+_/,'');['p_','u_'].forEach(pf=>{if(U[pf+base]&&(ri<S.room||(base!=='door'&&ri<=S.room)))U[pf+o.id]=1})}));Object.keys(U).forEach(k=>{if(!/^[pu]_r\d+_/.test(k))delete U[k]});S.used=U;save()}}catch(e){}/* 예전 저장 기록 옮기기 */
 TH=THEME;if(GRADE<=2)document.body.classList.add('kids');S.max=S.max||0;render();

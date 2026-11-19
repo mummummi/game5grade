@@ -65,6 +65,7 @@ button{font-family:inherit;font-size:18px;border:0;border-radius:12px;padding:10
 .opts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px}
 .opt{background:var(--panel2);color:var(--ink);border:2px solid var(--line);min-width:110px;padding:12px 16px;font-size:18px}
 .opt.big{font-size:34px;min-width:80px}
+.mopt.on,.mr.on{border-color:var(--gold)!important;background:#ffd54f33!important}.mlist{display:flex;flex-direction:column;gap:8px;margin:10px auto;max-width:620px}.mrow{display:flex;align-items:center;gap:10px;background:var(--panel2);border:2px solid var(--line);border-radius:14px;padding:8px 12px}.ml{flex:1;font-size:18px}.ma{opacity:.6}.mr{min-width:150px;background:#ffffff14;color:var(--ink);border:2px dashed var(--line);border-radius:12px;padding:10px 12px;font-size:18px}
 .ordercards{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:10px 0}
 .ordercards button{background:var(--panel2);color:var(--ink);border:2px solid var(--line);padding:10px 14px;font-size:17px;min-width:90px;position:relative}
 .ordercards button.on{border-color:var(--gold);opacity:.55}
@@ -202,15 +203,17 @@ const norm=v=>String(v).replace(/\s|,/g,'').toLowerCase();
 function lockHTML(k){
   if(k.kind==='dial')return `<div class="dials">${Array.from({length:k.ans.length},(_,i)=>`<div class="dial"><button data-u="${i}">▲</button><div class="d" id="dg${i}">0</div><button data-dn="${i}">▼</button></div>`).join('')}</div><div class="center"><button class="btn" id="lkOk">열기</button></div>`;
   if(k.kind==='text')return `<form class="lockform" id="lf"><input id="li" maxlength="${k.max||14}" placeholder="${k.ph||''}" autocomplete="off"><button class="btn">열기</button></form>`;
-  if(k.kind==='dir')return `<div class="seqshow" id="sq"></div><div class="pad">${[['U','⬆️'],['D','⬇️'],['L','⬅️'],['R','➡️']].map(([v,e])=>`<button data-v="${v}">${e}</button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
-  if(k.kind==='color')return `<div class="seqshow" id="sq"></div><div class="pad">${k.opts.map(([v,c])=>`<button class="c" data-v="${v}" style="background:${c}" title="${v}"></button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
-  if(k.kind==='keys')return `<div class="seqshow" id="sq"></div><div class="keys">${(k.opts||['도','레','미','파','솔','라','시']).map(v=>`<button data-v="${v}">${v}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">⌫ 지우기</button> <button class="btn" id="lkOk">확인</button></div>`;
-  if(k.kind==='choice')return `<div class="opts">${k.opts.map(o=>`<button class="opt${k.big?' big':''}" data-v="${o}">${o}</button>`).join('')}</div>`;
-  if(k.kind==='order')return `<div class="ordercards">${k.opts.map(o=>`<button data-v="${o}">${o}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">다시 고르기</button></div>`;
+  if(k.kind==='dir')return `<div class="seqshow" id="sq"></div><div class="pad">${[['U','⬆️'],['D','⬇️'],['L','⬅️'],['R','➡️']].map(([v,e])=>`<button data-v="${String(v).replace(/"/g,'&quot;')}">${e}</button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='color')return `<div class="seqshow" id="sq"></div><div class="pad">${k.opts.map(([v,c])=>`<button class="c" data-v="${String(v).replace(/"/g,'&quot;')}" style="background:${c}" title="${v}"></button>`).join('')}<button data-x="1">⌫</button></div><div class="center" style="margin-top:10px"><button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='keys')return `<div class="seqshow" id="sq"></div><div class="keys">${(k.opts||['도','레','미','파','솔','라','시']).map(v=>`<button data-v="${String(v).replace(/"/g,'&quot;')}">${v}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">⌫ 지우기</button> <button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='choice')return `<div class="opts">${k.opts.map(o=>`<button class="opt${k.big?' big':''}" data-v="${String(o).replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>`;
+  if(k.kind==='order')return `<div class="ordercards">${k.opts.map(o=>`<button data-v="${String(o).replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div><div class="center"><button class="ghost" data-x="1">다시 고르기</button></div>`;
+  if(k.kind==='multi')return `<div class="opts">${k.opts.map(o=>`<button class="opt mopt${k.big?' big':''}" data-m="${String(o).replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div><div class="center muted" style="margin-top:6px">맞는 것을 <b>모두</b> 눌러 고른 뒤 확인을 눌러요</div><div class="center"><button class="btn" id="lkOk">확인</button></div>`;
+  if(k.kind==='match'||k.kind==='sort'){const ch=k.kind==='match'?k.right:k.bins;return `<div class="mlist">${k.left.map((l,i)=>`<div class="mrow"><span class="ml">${l}</span><span class="ma">${k.kind==='match'?'↔':'→'}</span><button class="mr" data-i="${i}">❔</button></div>`).join('')}</div><div class="center muted">${k.kind==='match'?'오른쪽 칸을 눌러 짝을 바꿔요':'칸을 눌러 어디에 들어갈지 바꿔요'} (${ch.join(' · ')})</div><div class="center"><button class="btn" id="lkOk">확인</button></div>`}
 }
 function bindLock(k,ok){
   const box=$('mbody'),msg=$('lm');let seq=[];
-  const judge=v=>{const good=k.kind==='choice'?v===k.ans:Array.isArray(k.ans)?norm(v)===norm(k.ans.join('')):[k.ans,...(k.alts||[])].some(a=>norm(v)===norm(a));
+  const judge=v=>{const good=v===true?true:v===false?false:k.kind==='choice'?v===k.ans:Array.isArray(k.ans)?norm(v)===norm(k.ans.join('')):[k.ans,...(k.alts||[])].some(a=>norm(v)===norm(a));
     if(good){msg.className='msg good';msg.textContent='✅ 철컥! 열렸다!';tone(660);setTimeout(()=>tone(990),120);box.querySelectorAll('button,input').forEach(x=>x.disabled=true);setTimeout(ok,FAST?0:900)}
     else{S.wrong++;save();msg.className='msg bad';msg.textContent=k.bad||'❌ 열리지 않는다…';tone(150,.3);const c=$('mcard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');if(k.kind!=='text'){seq=[];show()}}};
   const show=()=>{const sq=box.querySelector('#sq');if(sq)sq.innerHTML=seq.map(v=>k.kind==='color'?`<span style="background:${k.opts.find(o=>o[0]===v)[1]}"></span>`:k.kind==='dir'?`<span>${{U:'⬆️',D:'⬇️',L:'⬅️',R:'➡️'}[v]}</span>`:`<span>${v}</span>`).join('');
@@ -219,7 +222,9 @@ function bindLock(k,ok){
   if(k.kind==='text'){$('lf').onsubmit=e=>{e.preventDefault();const v=$('li').value;if(v.trim())judge(v)}}
   if(['dir','color','keys'].includes(k.kind)){box.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{if(seq.length>=(k.ans.length+3))return;seq.push(b.dataset.v);if(k.kind==='keys')tone(NOTE[b.dataset.v]||440,.4);else tone(600,.05);show()});box.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{seq.pop();show()});$('lkOk').onclick=()=>judge(seq.join(''))}
   if(k.kind==='choice')box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>judge(b.dataset.v));
-  if(k.kind==='order'){box.querySelectorAll('.ordercards [data-v]').forEach(b=>b.onclick=()=>{if(seq.includes(b.dataset.v))return;seq.push(b.dataset.v);tone(600,.05);show();if(seq.length===k.opts.length)judge(seq.join(''))});box.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{seq=[];show()})}
+  if(k.kind==='multi'){const on=new Set();const upd=()=>box.querySelectorAll('[data-m]').forEach(b=>b.classList.toggle('on',on.has(b.dataset.m)));box.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const v=b.dataset.m;on.has(v)?on.delete(v):on.add(v);tone(600,.04);upd()});box._set=a=>{a.forEach(v=>on.add(String(v)));upd()};$('lkOk').onclick=()=>{const A=k.ans.map(String);const g=on.size===A.length&&A.every(v=>on.has(v));if(!g){on.clear();upd()}judge(g)}}
+  if(k.kind==='match'||k.kind==='sort'){const ch=k.kind==='match'?k.right:k.bins;const st=k.left.map(()=>-1);const upd=()=>box.querySelectorAll('.mr').forEach(b=>{const i=+b.dataset.i;b.textContent=st[i]<0?'❔':ch[st[i]];b.classList.toggle('on',st[i]>=0)});box.querySelectorAll('.mr').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;st[i]=(st[i]+1)%ch.length;tone(520+st[i]*60,.04);upd()});box._set=a=>{a.forEach((v,i)=>st[i]=ch.indexOf(v));upd()};$('lkOk').onclick=()=>{if(st.some(x=>x<0)){msg.className='msg bad';msg.textContent='❔ 아직 정하지 않은 칸이 있어요.';return}judge(st.every((x,i)=>ch[x]===k.ans[i]))}}
+  if(k.kind==='order'){box.querySelectorAll('.ordercards [data-v]').forEach(b=>b.onclick=()=>{if(seq.includes(b.dataset.v))return;seq.push(b.dataset.v);tone(600,.05);show();if(seq.length===(Array.isArray(k.ans)?k.ans.length:k.opts.length))judge(seq.join('\u0001')===(Array.isArray(k.ans)?k.ans:[]).join('\u0001')||(!Array.isArray(k.ans)&&norm(seq.join(''))===norm(k.ans)))});box.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{seq=[];show()})}
 }
 /* ═══════ 물건 조사 ═══════ */
 const FAST=QS.get('fast')==='1';
@@ -300,7 +305,7 @@ window.__auto=async function(){const out=[];const sl=ms=>new Promise(r=>setTimeo
     for(const o of r.objects){if(!avail(o)||solved(o)&&!o.door)continue;if(o.need&&!has(o.need)&&!S.used['u_'+o.id])continue;if(o.door&&!o.lock&&!(o.needs||[]).every(flag))continue;
       const room=S.room;if(o.need&&!S.used['u_'+o.id])SEL=o.need;activate(o);await sl(5);
       if(o.lock&&!solved(o)){const k=val(o.lock);const v=Array.isArray(k.ans)?k.ans:k.ans;
-        if(k.kind==='dial'){$('mbody')._set(v);$('lkOk').click()}else if(k.kind==='text'){$('li').value=v;$('lf').requestSubmit()}
+        if(['dial','multi','match','sort'].includes(k.kind)){$('mbody')._set(v);$('lkOk').click()}else if(k.kind==='text'){$('li').value=v;$('lf').requestSubmit()}
         else if(k.kind==='choice'){[...document.querySelectorAll('#mbody .opt')].find(b=>b.dataset.v===k.ans).click()}
         else{const arr=Array.isArray(v)?v:String(v).split('');for(const x of arr)[...document.querySelectorAll('#mbody [data-v]')].find(b=>b.dataset.v===x).click();$('lkOk')&&$('lkOk').click()}
         await sl(30)}
@@ -352,6 +357,37 @@ const THEME={
   ]};
 
 </script>
+<script>/* 🧩 퍼즐 재설계 */
+(function(){const P=(function(){
+/* 5학년 · 생태계 연구소 — 생산자·소비자·분해자, 먹이 사슬, 생물·비생물 요소, 직육면체 (평균은 기존) */
+const RL=L([['🌾 벼','생산자'],['🐇 토끼','소비자'],['🍄 버섯','분해자'],['🦅 매','소비자']],[['🌾 벼','생산자'],['🐇 토끼','소비자'],['🍄 버섯','분해자'],['🦅 매','소비자'],['🦠 세균','분해자'],['🌳 참나무','생산자']],[['🌾 벼','생산자'],['🐇 토끼','소비자'],['🍄 버섯','분해자'],['🦅 매','소비자'],['🦠 세균','분해자'],['🌳 참나무','생산자'],['🟢 곰팡이','분해자'],['🌿 검정말','생산자'],['🐸 개구리','소비자']]);
+const CH=L(['🌾 벼','🦗 메뚜기','🐸 개구리','🐍 뱀'],['🌾 벼','🦗 메뚜기','🐸 개구리','🐍 뱀','🦅 매'],['🌿 수초','🦐 물벼룩','🐟 송사리','🐸 개구리','🐍 뱀','🦅 매']);
+const CD=L(['🍄 버섯'],['🍄 버섯','🐄 소'],['🍄 버섯','🐄 소','🐇 토끼']);
+const AB=L([['☀️ 햇빛','비생물 요소'],['💧 물','비생물 요소'],['🐟 붕어','생물 요소'],['🌱 개구리밥','생물 요소'],['🌡️ 온도','비생물 요소']],[['☀️ 햇빛','비생물 요소'],['💧 물','비생물 요소'],['🐟 붕어','생물 요소'],['🌱 개구리밥','생물 요소'],['🌡️ 온도','비생물 요소'],['🦠 세균','생물 요소'],['🌬️ 공기','비생물 요소']],[['☀️ 햇빛','비생물 요소'],['💧 물','비생물 요소'],['🐟 붕어','생물 요소'],['🌱 개구리밥','생물 요소'],['🌡️ 온도','비생물 요소'],['🦠 세균','생물 요소'],['🌬️ 공기','비생물 요소'],['🟤 흙','비생물 요소'],['🍄 곰팡이','생물 요소']]);
+const BX=L([['면의 수','6개'],['모서리의 수','12개'],['꼭짓점의 수','8개']],[['면의 수','6개'],['모서리의 수','12개'],['꼭짓점의 수','8개'],['겨냥도에서 보이지 않는 모서리','3개']],[['면의 수','6개'],['모서리의 수','12개'],['꼭짓점의 수','8개'],['겨냥도에서 보이지 않는 모서리','3개'],['겨냥도에서 보이지 않는 꼭짓점','1개'],['한 면과 수직인 면의 수','4개']]);
+return {
+ rooms:[
+ {o:{
+  role:{title:'🧫 생물 표본장',html:'<div class="box">표본장 서랍에 생물 카드가 뒤섞였어요. <b>생산자·소비자·분해자</b> 칸에 나누어 넣으면 돋보기를 쓸 수 있어요.</div><div class="paper">생산자: 햇빛으로 스스로 양분을 만들어요 · 소비자: 다른 생물을 먹어요 · 분해자: 죽은 생물을 분해해요</div>',lock:()=>({kind:'sort',left:RL.map(r=>r[0]),bins:['생산자','소비자','분해자'],ans:RL.map(r=>r[1]),q:'어떤 역할일까요?'}),give:'lens',done:'서랍이 열리며 🔍 돋보기가 나왔어요!'},
+  chain:{title:'🔗 먹이 사슬 판',need:'lens',locked:'표본이 너무 작아 잘 보이지 않아요.',html:'<div class="box">🔍 돋보기로 표본을 살펴봐요. 이 습지에서 <b>먹고 먹히는 관계</b>로 이어진 생물만 골라 <b>먹히는 쪽부터</b> 이어 주세요. (이 사슬에 들어가지 않는 생물도 섞여 있어요)</div>',lock:()=>({kind:'order',ans:CH,opts:[...CH,...CD].sort(),q:'먹히는 쪽부터 차례로'}),set:'chain',done:'먹이 사슬 완성! 습지 실험장 문이 열려요.'},
+ },hints:()=>L(['버섯은 분해자','벼 → 메뚜기 → 개구리 → 뱀'],['세균도 분해자, 나무는 생산자','버섯과 소는 이 사슬에 없어요.'],['곰팡이는 분해자, 검정말은 생산자','물속 사슬: 수초 → 물벼룩 → 송사리 → …'])},
+ {o:{
+  abio:{title:'📟 환경 측정기',need:'note',locked:'측정기 사용법이 적힌 일지가 필요해요.',html:'<div class="box">📓 일지를 보고 측정기를 켰어요. 습지의 요소를 <b>생물 요소</b>와 <b>비생물 요소</b>로 나누어 입력해요.</div>',lock:()=>({kind:'sort',left:AB.map(a=>a[0]),bins:['생물 요소','비생물 요소'],ans:AB.map(a=>a[1]),q:'생물 요소일까요?'}),set:'abio',done:'측정 완료! 수조 연구실 문이 열려요.'},
+ },hints:()=>L(['평균 = 자료의 합 ÷ 자료의 수','햇빛, 물, 온도는 비생물 요소'],['세균도 살아 있는 생물이에요.'],['흙은 비생물, 곰팡이는 생물'])},
+ {o:{
+  tank:{title:'🐠 직육면체 수조',html:'<div class="box">수조 관리 화면: "수조 모양(직육면체)을 확인하시오. 항목마다 알맞은 수를 연결하면 카드가 나옵니다."</div><div class="paper">직육면체: 직사각형 6개로 둘러싸인 도형</div>',lock:()=>({kind:'match',left:BX.map(b=>b[0]),right:[...new Set(BX.map(b=>b[1]))].sort((a,b)=>parseInt(a)-parseInt(b)),ans:BX.map(b=>b[1]),q:'몇 개일까요?'}),give:'card',done:'수조 아래에서 💳 시스템 카드가 나왔어요!'},
+ },hints:()=>L(['위·아래·앞·뒤·왼쪽·오른쪽 면','꼭짓점은 위에 4개, 아래에 4개'],['겨냥도에서 보이지 않는 모서리는 점선 3개'],['한 면과 마주 보는 면을 빼면 수직인 면 4개'])},
+ ]};
+
+})();
+const KEYS=['lock','give','set','need','when','needs','done','locked','pre','after','consume','useMsg','html','hideWhen'];
+['story','endText','title'].forEach(k=>{if(P[k])THEME[k]=P[k]});if(P.items)Object.assign(THEME.items,P.items);
+(P.rooms||[]).forEach((pr,ri)=>{const r=THEME.rooms[ri];if(!r||!pr)return;if(pr.hints)r.hints=pr.hints;if(pr.tip)r.tip=pr.tip;if(pr.name)r.name=pr.name;
+ Object.entries(pr.o||{}).forEach(([id,pt])=>{let o=r.objects.find(x=>x.id===id);if(!o){o={id};r.objects.push(o)}
+  if(pt._clear!==false&&!o.door)KEYS.forEach(k=>delete o[k]);if(o.door)['lock','need','when','needs','pre','locked','html'].forEach(k=>{if(k in pt)delete o[k]});
+  Object.assign(o,pt);delete o._clear;if(/^deco/.test(id))delete o.deco})});
+})();
+/* 🧩 끝 */</script>
 <script>
 const DART=d=>{const [k,e,t,x,y,S]=d;
 if(k==='f')return E(x,y+S*0.4,S*0.42,S*0.09,'#0000002e')+EM(x,y,e,S*0.85,'filter="url(#sh)"');
@@ -360,9 +396,9 @@ if(k==='p'){const w=S*0.95,h=S*0.95;return C(x,y-h/2-10,4,'#555')+P(`M${x} ${y-h
 const sw=S*1.1;return EM(x,y-S*0.12,e,S*0.68,'filter="url(#sh)"')+R(x-sw/2,y+S*0.24,sw,13,'#8d5a34','rx="3" filter="url(#sh)"')+R(x-sw/2+12,y+S*0.24+13,9,20,'#5e3a1f','rx="2"')+R(x+sw/2-21,y+S*0.24+13,9,20,'#5e3a1f','rx="2"')};
 /* 🧸 분위기 소품 (문제와 상관없는 기물 · 눌러 보면 설명만 나와요) */
 const DECOR=[[["s", "🦉", "부엉이 박제 모형", 1035, 250, 150, "숲의 최종 소비자 부엉이 모형이에요."], ["f", "🍂", "낙엽 표본", 90, 735, 125, "분해되고 있는 낙엽을 모아 놓았어요."], ["p", "🌳", "숲 생태 사진", 480, 525, 150, "커다란 숲의 사계절 사진이에요."]], [["f", "🪷", "연꽃", 90, 735, 125, "습지에 핀 연꽃이에요. 잎에 물방울이 굴러요."], ["f", "🦆", "청둥오리", 960, 735, 125, "꽥꽥! 오리가 헤엄쳐 지나가요."], ["f", "🦗", "메뚜기", 495, 800, 125, "풀잎 위에서 폴짝 뛰는 메뚜기예요."]], [["f", "🐌", "우렁이", 90, 735, 125, "수조 벽을 천천히 기어가요."], ["s", "💡", "수조 조명", 735, 250, 150, "수초가 잘 자라도록 비추는 조명이에요."], ["f", "🧽", "수조 청소 도구", 630, 735, 125, "이끼를 닦는 스펀지와 솔이에요."]]];
-DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:DART(d),html:'<div class="box">'+d[6]+'</div>'}))});
+DECOR.forEach((list,ri)=>{const r=THEME.rooms[ri];if(!r)return;list.forEach((d,k)=>{const ex=r.objects.find(o=>o.id==='deco'+k);if(ex){if(!ex.art)ex.art=DART(d);if(!ex.title)ex.title=d[1]+' '+d[2];return}r.objects.push({id:'deco'+k,deco:1,title:d[1]+' '+d[2],art:DART(d),html:'<div class="box">'+d[6]+'</div>'})})});
 /* 🖼️ AI 배경 그림 */
-const ARTMAP={"rooms": [{"role": [100, 110, 330, 400, {"svg": "T(265,230,'생태계','#fff',38,'bold')+T(265,310,'생산자 · 소비자','#fff',30,'bold')+T(265,390,'분해자','#fff',34,'bold')"}], "chain": [600, 460, 400, 170, {"fit": 1, "pad": 0.95}], "door": [1360, 140, 200, 730], "deco0": [980, 390, 80, 120], "deco1": [920, 190, 170, 190], "deco2": [1190, 200, 140, 190]}, {"count": [100, 190, 340, 350, {"svg": "T(270,300,'개구리 수','#fff',36,'bold')+T(270,370,'요일별','#fff',32,'bold')+T(270,440,'기록','#fff',32,'bold')"}], "abio": [750, 300, 150, 200], "door": [1360, 120, 200, 600], "deco0": [530, 450, 100, 70], "deco1": [1050, 500, 100, 90], "deco2": [260, 700, 170, 120]}, {"tank": [110, 270, 470, 320], "exit": [1290, 190, 310, 690, {"svg": "T(1445,335,'REBOOT','#2e7d32',38,'bold')"}], "deco0": [650, 540, 120, 140], "deco1": [190, 70, 320, 150], "deco2": [900, 280, 200, 310]}], "id": "g5-eco"};
+const ARTMAP={"rooms": [{"role": [100, 110, 330, 400], "chain": [600, 460, 400, 170], "door": [1360, 140, 200, 730], "deco0": [980, 390, 80, 120], "deco1": [920, 190, 170, 190], "deco2": [1190, 200, 140, 190]}, {"count": [100, 190, 340, 350, {"svg": "T(270,300,'개구리 수','#fff',36,'bold')+T(270,370,'요일별','#fff',32,'bold')+T(270,440,'기록','#fff',32,'bold')"}], "abio": [750, 300, 150, 200], "door": [1360, 120, 200, 600], "deco0": [530, 450, 100, 70], "deco1": [1050, 500, 100, 90], "deco2": [260, 700, 170, 120]}, {"tank": [110, 270, 470, 320], "exit": [1290, 190, 310, 690, {"svg": "T(1445,335,'REBOOT','#2e7d32',38,'bold')"}], "deco0": [650, 540, 120, 140], "deco1": [190, 70, 320, 150], "deco2": [900, 280, 200, 310]}], "id": "g5-eco"};
 const AMbox=a=>{const ns='http://www.w3.org/2000/svg';const sv=document.createElementNS(ns,'svg');sv.setAttribute('width','1600');sv.setAttribute('height','900');sv.style.cssText='position:absolute;left:-9999px;top:0';sv.innerHTML=DEFS+a;document.body.appendChild(sv);let b={x:0,y:0,width:1,height:1};try{const g=document.createElementNS(ns,'g');while(sv.childNodes.length>1)g.appendChild(sv.childNodes[1]);sv.appendChild(g);const r=g.getBBox();b={x:r.x,y:r.y,width:r.width||1,height:r.height||1}}catch(e){}sv.remove();return b};
 ARTMAP.rooms.forEach((hot,ri)=>{const r=THEME.rooms[ri];if(!r||!hot)return;const src='art/'+ARTMAP.id+'_'+(ri+1)+'.webp';
  r.bg=()=>`<image href="${src}" x="0" y="0" width="1600" height="900" preserveAspectRatio="xMidYMid slice"/>`;
